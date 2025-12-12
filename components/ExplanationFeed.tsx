@@ -69,31 +69,33 @@ const CodeBlock = ({ inline, className, children, ...props }: any) => {
 };
 
 // --- PDF Specific Components ---
+// Tuned for A4 scaling.
+// IMPORTANT: Using standard system fonts (Arial, Times) is crucial for reliable PDF generation via html2canvas/jsPDF.
 const PdfComponents = {
-  h1: ({node, ...props}: any) => <h1 style={{fontSize: '24pt', fontFamily: 'Times New Roman, serif', fontWeight: 'bold', color: '#1a365d', marginTop: '24px', marginBottom: '16px', lineHeight: '1.2', pageBreakAfter: 'avoid'}} {...props} />,
-  h2: ({node, ...props}: any) => <h2 style={{fontSize: '18pt', fontFamily: 'Times New Roman, serif', fontWeight: 'bold', color: '#2c5282', marginTop: '20px', marginBottom: '12px', lineHeight: '1.3', borderBottom: '1px solid #e2e8f0', paddingBottom: '6px', pageBreakAfter: 'avoid'}} {...props} />,
-  h3: ({node, ...props}: any) => <h3 style={{fontSize: '14pt', fontFamily: 'Times New Roman, serif', fontWeight: 'bold', color: '#2d3748', marginTop: '16px', marginBottom: '10px', lineHeight: '1.3', pageBreakAfter: 'avoid'}} {...props} />,
-  p: ({node, ...props}: any) => <p style={{fontSize: '11pt', fontFamily: 'Helvetica, Arial, sans-serif', color: '#1f2937', marginBottom: '12px', lineHeight: '1.6', textAlign: 'justify'}} {...props} />,
-  ul: ({node, ...props}: any) => <ul style={{marginBottom: '12px', paddingLeft: '24px', listStyleType: 'disc'}} {...props} />,
-  ol: ({node, ...props}: any) => <ol style={{marginBottom: '12px', paddingLeft: '24px', listStyleType: 'decimal'}} {...props} />,
-  li: ({node, ...props}: any) => <li style={{marginBottom: '6px', fontSize: '11pt', fontFamily: 'Helvetica, Arial, sans-serif', lineHeight: '1.6'}} {...props} />,
-  blockquote: ({node, ...props}: any) => <blockquote style={{borderLeft: '4px solid #cbd5e0', paddingLeft: '16px', marginLeft: '0', color: '#4a5568', fontStyle: 'italic', marginBottom: '16px'}} {...props} />,
-  table: ({node, ...props}: any) => <table style={{width: '100%', borderCollapse: 'collapse', marginBottom: '16px', tableLayout: 'fixed', border: '1px solid #e2e8f0'}} {...props} />,
-  thead: ({node, ...props}: any) => <thead style={{backgroundColor: '#f7fafc'}} {...props} />,
-  tr: ({node, ...props}: any) => <tr style={{borderBottom: '1px solid #e2e8f0'}} {...props} />,
-  th: ({node, ...props}: any) => <th style={{padding: '10px', border: '1px solid #cbd5e0', fontSize: '10pt', fontWeight: 'bold', textAlign: 'left', backgroundColor: '#edf2f7', color: '#2d3748'}} {...props} />,
-  td: ({node, ...props}: any) => <td style={{padding: '10px', border: '1px solid #cbd5e0', fontSize: '10pt', verticalAlign: 'top', wordWrap: 'break-word', overflowWrap: 'break-word'}} {...props} />,
+  h1: ({node, ...props}: any) => <h1 style={{fontSize: '32px', fontFamily: '"Times New Roman", Times, serif', fontWeight: 'bold', color: '#111827', marginTop: '0px', marginBottom: '24px', lineHeight: '1.4', pageBreakAfter: 'avoid'}} {...props} />,
+  h2: ({node, ...props}: any) => <h2 style={{fontSize: '24px', fontFamily: '"Times New Roman", Times, serif', fontWeight: 'bold', color: '#1e3a8a', marginTop: '30px', marginBottom: '16px', lineHeight: '1.4', borderBottom: '2px solid #e5e7eb', paddingBottom: '8px', pageBreakAfter: 'avoid'}} {...props} />,
+  h3: ({node, ...props}: any) => <h3 style={{fontSize: '20px', fontFamily: '"Times New Roman", Times, serif', fontWeight: 'bold', color: '#374151', marginTop: '24px', marginBottom: '12px', lineHeight: '1.4', pageBreakAfter: 'avoid'}} {...props} />,
+  p: ({node, ...props}: any) => <p style={{fontSize: '14px', fontFamily: 'Arial, sans-serif', color: '#1f2937', marginBottom: '12px', lineHeight: '1.6', textAlign: 'left', letterSpacing: 'normal'}} {...props} />,
+  ul: ({node, ...props}: any) => <ul style={{marginBottom: '16px', paddingLeft: '24px', listStyleType: 'disc'}} {...props} />,
+  ol: ({node, ...props}: any) => <ol style={{marginBottom: '16px', paddingLeft: '24px', listStyleType: 'decimal'}} {...props} />,
+  li: ({node, ...props}: any) => <li style={{marginBottom: '8px', fontSize: '14px', fontFamily: 'Arial, sans-serif', lineHeight: '1.6', color: '#374151', textAlign: 'left'}} {...props} />,
+  blockquote: ({node, ...props}: any) => <blockquote style={{borderLeft: '4px solid #cbd5e0', paddingLeft: '16px', marginLeft: '0', color: '#4b5563', fontStyle: 'italic', marginBottom: '20px', fontSize: '14px', lineHeight: '1.6'}} {...props} />,
+  table: ({node, ...props}: any) => <table style={{width: '100%', borderCollapse: 'collapse', marginBottom: '20px', border: '1px solid #d1d5db', tableLayout: 'auto'}} {...props} />,
+  thead: ({node, ...props}: any) => <thead style={{backgroundColor: '#f3f4f6'}} {...props} />,
+  tr: ({node, ...props}: any) => <tr style={{borderBottom: '1px solid #d1d5db'}} {...props} />,
+  th: ({node, ...props}: any) => <th style={{padding: '8px', border: '1px solid #d1d5db', fontSize: '12px', fontWeight: 'bold', textAlign: 'left', backgroundColor: '#f9fafb', color: '#111827'}} {...props} />,
+  td: ({node, ...props}: any) => <td style={{padding: '8px', border: '1px solid #d1d5db', fontSize: '12px', verticalAlign: 'top', color: '#374151'}} {...props} />,
   code: ({inline, className, children, ...props}: any) => {
     if (inline) {
-       return <code style={{backgroundColor: '#f3f4f6', padding: '2px 4px', borderRadius: '4px', fontFamily: 'Courier New, monospace', fontSize: '0.9em', color: '#c05621'}} {...props}>{children}</code>;
+       return <code style={{backgroundColor: '#f3f4f6', padding: '2px 4px', borderRadius: '4px', fontFamily: '"Courier New", Courier, monospace', fontSize: '0.9em', color: '#c05621'}} {...props}>{children}</code>;
     }
     return (
-       <div style={{backgroundColor: '#1a202c', color: '#e2e8f0', padding: '12px', borderRadius: '6px', marginBottom: '16px', overflowX: 'hidden'}}>
-         <pre style={{margin: 0, fontFamily: 'Courier New, monospace', fontSize: '9pt', whiteSpace: 'pre-wrap', wordBreak: 'break-all'}}>{children}</pre>
+       <div style={{backgroundColor: '#1a202c', color: '#f8fafc', padding: '12px', borderRadius: '8px', marginBottom: '16px', overflow: 'hidden'}}>
+         <pre style={{margin: 0, fontFamily: '"Courier New", Courier, monospace', fontSize: '11px', whiteSpace: 'pre-wrap', wordBreak: 'break-all', lineHeight: '1.4'}}>{children}</pre>
        </div>
     );
   },
-  img: ({node, ...props}: any) => <img style={{maxWidth: '100%', height: 'auto', display: 'block', margin: '16px auto', borderRadius: '4px'}} {...props} />,
+  img: ({node, ...props}: any) => <img style={{maxWidth: '100%', height: 'auto', display: 'block', margin: '20px auto', borderRadius: '4px'}} {...props} />,
 };
 
 export const ExplanationFeed: React.FC<ExplanationFeedProps> = ({ 
@@ -117,65 +119,99 @@ export const ExplanationFeed: React.FC<ExplanationFeedProps> = ({
     
     try {
         setIsDownloading(true);
+        // Create a dedicated container for PDF generation attached to the body
         const element = printRef.current.cloneNode(true) as HTMLElement;
         
-        element.style.display = 'block';
-        element.style.position = 'fixed';
-        element.style.top = '0';
-        element.style.left = '0';
-        element.style.width = '800px'; 
-        element.style.zIndex = '-9999';
-        element.style.backgroundColor = '#ffffff';
-        element.style.padding = '40px';
-        element.className = 'pdf-export-root';
+        // Append to body FIRST to ensure correct style computation by browser
+        document.body.appendChild(element);
 
+        // Standard A4 dimensions at 96 DPI (Web Standard)
+        const A4_WIDTH_PX = 794; 
+        
+        // Setup the invisible container styles
+        // Position fixed at 0,0 but behind everything (z-index -9999) to ensure 
+        // it's in the viewport for capture (fixing blank pages) but hidden from user.
+        element.style.display = 'block';
+        element.style.position = 'fixed'; 
+        element.style.left = '0';
+        element.style.top = '0';
+        element.style.width = `${A4_WIDTH_PX}px`;
+        element.style.zIndex = '-9999';
+        
+        // Ensure the container can grow
+        element.style.height = 'auto';
+        element.style.maxHeight = 'none';
+        element.style.overflow = 'visible';
+        
+        element.style.backgroundColor = '#ffffff';
+        element.style.color = '#000000'; // Force black text
+        element.style.padding = '40px'; 
+        element.className = 'pdf-export-root';
+        
+        // Add print-specific styles to force safe fonts and line heights
         const style = document.createElement('style');
         style.innerHTML = `
-          .pdf-export-root * {
-            box-sizing: border-box !important;
+          .pdf-export-root {
+            font-family: Arial, sans-serif !important;
+            line-height: 1.5 !important;
             letter-spacing: normal !important;
-            font-variant-ligatures: none !important;
-            text-rendering: auto !important;
+            text-align: left !important;
+          }
+          .pdf-export-root h1, .pdf-export-root h2, .pdf-export-root h3 {
+             font-family: "Times New Roman", Times, serif !important;
+             line-height: 1.2 !important;
+          }
+          .pdf-export-root p, .pdf-export-root li {
+             line-height: 1.6 !important;
           }
         `;
         element.appendChild(style);
 
-        document.body.appendChild(element);
-
-        const doc = new jsPDF('p', 'pt', 'a4');
-        const pdfWidth = doc.internal.pageSize.getWidth();
-        const margin = 30;
-        const availableWidth = pdfWidth - (margin * 2);
-        const elementWidth = 800;
-        const scale = availableWidth / elementWidth;
-
+        // A4 Dimensions in points: 595.28 x 841.89
+        const doc = new jsPDF({
+            orientation: 'p',
+            unit: 'pt',
+            format: 'a4'
+        });
+        
+        const pdfWidth = doc.internal.pageSize.getWidth(); // ~595pt
+        const margin = 30; // 30pt margin
+        const contentWidth = pdfWidth - (margin * 2);
+        
+        // Calculate rendering
         await doc.html(element, {
             callback: function (doc) {
                 const safeTitle = (tab.title || 'document').replace(/[^a-z0-9]/gi, '_').toLowerCase();
                 doc.save(`${safeTitle}_explanations.pdf`);
-                document.body.removeChild(element);
+                // Cleanup
+                if (document.body.contains(element)) {
+                   document.body.removeChild(element);
+                }
                 setIsDownloading(false);
             },
             x: margin,
             y: margin,
+            // The 'width' option in doc.html() sets the width of the content in the PDF (in pt).
+            // It automatically calculates the scale factor based on the element's clientWidth (windowWidth).
+            width: contentWidth, 
+            windowWidth: A4_WIDTH_PX, 
+            autoPaging: 'text',
             html2canvas: {
-                scale: scale,
+                scale: 1, // Fix overlap: Force 1:1 scale, let jsPDF handle vector scaling
                 useCORS: true,
                 logging: false,
-                windowWidth: 1000,
-                scrollY: 0,
-                scrollX: 0,
-                backgroundColor: '#ffffff',
                 letterRendering: false, 
+                backgroundColor: '#ffffff'
             },
-            autoPaging: 'text',
-            width: elementWidth,
-            windowWidth: elementWidth,
+            margin: [margin, margin, margin, margin]
         });
     } catch (e) {
         console.error("PDF generation failed", e);
-        alert("Failed to generate PDF.");
+        alert("Failed to generate PDF. Please try again.");
         setIsDownloading(false);
+        // Cleanup global selector if needed
+        const el = document.querySelector('.pdf-export-root');
+        if (el) document.body.removeChild(el);
     }
   };
 
@@ -434,20 +470,24 @@ export const ExplanationFeed: React.FC<ExplanationFeedProps> = ({
       </div>
       
       {/* Hidden container - Source for PDF Generation */}
-      <div 
-        ref={printRef} 
-        style={{ display: 'none' }}
-      >
-         <div style={{fontFamily: 'Helvetica, Arial, sans-serif', color: '#000000'}}>
-            <div style={{borderBottom: '2px solid #2c5282', paddingBottom: '20px', marginBottom: '30px'}}>
-               <h1 style={{fontSize: '28pt', fontWeight: 'bold', margin: '0 0 10px 0', color: '#1a365d', fontFamily: 'Times New Roman, serif'}}>{tab.title}</h1>
-               <p style={{fontSize: '12pt', color: '#718096', margin: 0}}>AI-Powered Analysis & Explanation</p>
-               <p style={{fontSize: '10pt', color: '#a0aec0', marginTop: '5px'}}>Generated by Tabwise PDF Explainer</p>
+      {/* Note: The 'display: none' here is intentional for the React render. 
+          When we clone it in handleDownload, we force display: block. */}
+      <div ref={printRef} style={{ display: 'none' }}>
+         <div style={{fontFamily: 'Arial, sans-serif', color: '#111827'}}>
+            {/* Title Page Look */}
+            <div style={{borderBottom: '4px solid #1e3a8a', paddingBottom: '32px', marginBottom: '48px', marginTop: '20px'}}>
+               <h1 style={{fontSize: '42px', fontWeight: 'bold', margin: '0 0 16px 0', color: '#1e3a8a', fontFamily: '"Times New Roman", Times, serif', lineHeight: '1.2'}}>{tab.title}</h1>
+               <p style={{fontSize: '18px', color: '#4b5563', margin: 0}}>AI-Powered Analysis & Explanation</p>
+               <div style={{marginTop: '12px', fontSize: '14px', color: '#9ca3af', display: 'flex', alignItems: 'center', gap: '8px'}}>
+                 <span>Generated by Tabwise PDF Explainer</span>
+                 <span>•</span>
+                 <span>{new Date().toLocaleDateString()}</span>
+               </div>
             </div>
             
             {tab.overallSummary && (
-                <div style={{marginBottom: '40px', pageBreakAfter: 'always'}}>
-                    <h2 style={{fontSize: '20pt', fontWeight: 'bold', borderBottom: '1px solid #cbd5e0', paddingBottom: '8px', marginBottom: '20px', color: '#2d3748', fontFamily: 'Times New Roman, serif'}}>Executive Summary</h2>
+                <div style={{marginBottom: '50px', pageBreakAfter: 'always'}}>
+                    <h2 style={{fontSize: '32px', fontWeight: 'bold', borderBottom: '2px solid #e5e7eb', paddingBottom: '12px', marginBottom: '24px', color: '#1e3a8a', fontFamily: '"Times New Roman", Times, serif'}}>Executive Summary</h2>
                     <ReactMarkdown 
                         remarkPlugins={[remarkGfm]} 
                         rehypePlugins={[rehypeRaw]}
@@ -460,9 +500,9 @@ export const ExplanationFeed: React.FC<ExplanationFeedProps> = ({
             
             {(Object.entries(tab.explanations) as [string, ExplanationState][]).sort((a, b) => Number(a[0]) - Number(b[0])).map(([page, exp]) => (
                 exp.status === 'done' && (
-                    <div key={page} style={{marginBottom: '40px', pageBreakInside: 'avoid'}}>
-                        <div style={{backgroundColor: '#ebf8ff', borderLeft: '5px solid #3182ce', padding: '12px 16px', marginBottom: '20px'}}>
-                           <h2 style={{fontSize: '16pt', fontWeight: 'bold', margin: 0, color: '#2c5282', fontFamily: 'Times New Roman, serif'}}>
+                    <div key={page} style={{marginBottom: '50px', pageBreakInside: 'avoid'}}>
+                        <div style={{backgroundColor: '#eff6ff', borderLeft: '6px solid #2563eb', padding: '16px 24px', marginBottom: '24px', borderRadius: '0 8px 8px 0'}}>
+                           <h2 style={{fontSize: '24px', fontWeight: 'bold', margin: '0', color: '#1e40af', fontFamily: '"Times New Roman", Times, serif'}}>
                                Page {page} Analysis
                            </h2>
                         </div>
@@ -473,7 +513,8 @@ export const ExplanationFeed: React.FC<ExplanationFeedProps> = ({
                         >
                             {exp.text}
                         </ReactMarkdown>
-                        <div style={{height: '1px', backgroundColor: '#e2e8f0', margin: '30px 0', width: '100%'}}></div>
+                        {/* Subtle divider between pages if they flow together */}
+                        <div style={{height: '1px', backgroundColor: '#e5e7eb', margin: '40px 0', width: '100%'}}></div>
                     </div>
                 )
             ))}

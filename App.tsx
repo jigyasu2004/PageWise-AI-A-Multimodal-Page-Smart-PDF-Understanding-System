@@ -389,7 +389,7 @@ const App: React.FC = () => {
 
     // Convert to array, sort by page number to ensure sequential checking
     const pages = Object.entries(activeTab.explanations)
-        .map(([k, v]) => ({ page: parseInt(k), state: v }))
+        .map(([k, v]) => ({ page: parseInt(k), state: v as ExplanationState }))
         .sort((a, b) => a.page - b.page);
 
     for (const { page, state } of pages) {
