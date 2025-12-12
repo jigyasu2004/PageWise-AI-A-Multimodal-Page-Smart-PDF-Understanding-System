@@ -4,6 +4,7 @@ import { PDFViewer } from './components/PDFViewer';
 import { ControlPanel } from './components/ControlPanel';
 import { ExplanationFeed } from './components/ExplanationFeed';
 import { ChatInterface } from './components/ChatInterface';
+import { SelectionMenu } from './components/SelectionMenu';
 import { Tab, INITIAL_TAB, ChatMessage, ChatMode, AIModel, ExplanationState, APP_THEMES } from './types';
 import { analyzePDFInitial, generatePageExplanation, generateOverallSummary, sendChatMessage } from './services/geminiService';
 import { MessageCircle, Loader2, Undo } from 'lucide-react';
@@ -168,11 +169,16 @@ const App: React.FC = () => {
 
     // Optimistically set loading state
     // We use functional update here to ensure we are updating based on latest state
+    // IMPORTANT: Provide 'text' (even if empty) to satisfy ExplanationState interface and avoid crashes
     setTabs(prev => prev.map(t => t.id === tabId ? {
         ...t,
         explanations: {
             ...t.explanations,
-            [pageNum]: { ...t.explanations[pageNum], status: 'loading' } 
+            [pageNum]: { 
+                text: previousExplanationText, 
+                ...t.explanations[pageNum], 
+                status: 'loading' 
+            } 
         }
     } : t));
 
@@ -216,7 +222,7 @@ const App: React.FC = () => {
               ...t,
               explanations: {
                   ...t.explanations,
-                  [pageNum]: { text: '', status: 'error' }
+                  [pageNum]: { text: previousExplanationText || '', status: 'error' }
               }
           };
       }));
@@ -331,6 +337,24 @@ const App: React.FC = () => {
     }
   };
 
+  const handleSelectionAsk = (text: string) => {
+    if (!activeTab.file) {
+        alert("Please upload a file first to ask questions.");
+        return;
+    }
+    
+    // Open chat and force mode to full-pdf
+    setIsChatOpen(true);
+    updateTab(activeTabId, { chatMode: 'full-pdf' });
+    
+    handleSendMessage(
+        `Explain this: "${text}"`, 
+        'full-pdf', // Default to full-pdf context for selected text
+        false, 
+        activeTab.settings.model // Use currently selected model
+    );
+  };
+
   // --- AUTOMATION EFFECTS ---
 
   // 1. Trigger Overall Summary & First Page when analysis completes (isProcessing goes true -> false)
@@ -363,12 +387,14 @@ const App: React.FC = () => {
   useEffect(() => {
     if (!activeTab.file || activeTab.isProcessing) return;
 
-    // Find the highest page number that is 'done'
-    const pages = Object.entries(activeTab.explanations) as [string, ExplanationState][];
-    for (const [pageStr, state] of pages) {
-        const pageNum = parseInt(pageStr);
+    // Convert to array, sort by page number to ensure sequential checking
+    const pages = Object.entries(activeTab.explanations)
+        .map(([k, v]) => ({ page: parseInt(k), state: v }))
+        .sort((a, b) => a.page - b.page);
+
+    for (const { page, state } of pages) {
         if (state.status === 'done') {
-            const nextPage = pageNum + 1;
+            const nextPage = page + 1;
             // If next page exists (within count) and is not started, trigger it
             if (nextPage <= activeTab.pageCount) {
                 const nextState = activeTab.explanations[nextPage];
@@ -455,12 +481,16 @@ const App: React.FC = () => {
                     isProcessing={activeTab.chatHistory.length > 0 && activeTab.chatHistory[activeTab.chatHistory.length-1].role === 'user'}
                     currentPage={activeTab.currentPage}
                     onClose={() => setIsChatOpen(false)}
+                    mode={activeTab.chatMode || 'general'} 
+                    onModeChange={(m) => updateTab(activeTabId, { chatMode: m })}
                 />
                 </div>
             )}
             </div>
         )}
       </div>
+      
+      <SelectionMenu onAsk={handleSelectionAsk} />
       
       {/* Global Processing Overlay */}
       {activeTab.isProcessing && (

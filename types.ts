@@ -27,6 +27,7 @@ export interface Tab {
   
   // Chat
   chatHistory: ChatMessage[];
+  chatMode: ChatMode;
   
   // Global Regeneration Context
   globalRegenerationPrompt?: string;
@@ -206,5 +207,6 @@ export const INITIAL_TAB: Tab = {
   explanationViewMode: 'page',
 
   settings: JSON.parse(JSON.stringify(DEFAULT_SETTINGS)),
-  chatHistory: []
+  chatHistory: [],
+  chatMode: 'general'
 };

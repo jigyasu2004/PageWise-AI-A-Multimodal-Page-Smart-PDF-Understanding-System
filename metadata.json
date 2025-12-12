@@ -1,7 +1,5 @@
 {
   "name": "Tabwise PDF Explainer",
   "description": "A professional PDF analysis tool with tabbed browsing, progressive page-by-page explanations, and an advanced AI chatbot with Google Search and Image Generation capabilities.",
-  "requestFramePermissions": [
-    "microphone"
-  ]
+  "requestFramePermissions": []
 }

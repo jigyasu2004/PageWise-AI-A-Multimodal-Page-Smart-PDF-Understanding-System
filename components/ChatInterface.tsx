@@ -13,6 +13,8 @@ interface ChatInterfaceProps {
   isProcessing: boolean;
   currentPage: number;
   onClose: () => void;
+  mode: ChatMode;
+  onModeChange: (mode: ChatMode) => void;
 }
 
 const CodeBlock = ({ inline, className, children, ...props }: any) => {
@@ -66,9 +68,16 @@ const CodeBlock = ({ inline, className, children, ...props }: any) => {
   );
 };
 
-export const ChatInterface: React.FC<ChatInterfaceProps> = ({ history, onSendMessage, isProcessing, currentPage, onClose }) => {
+export const ChatInterface: React.FC<ChatInterfaceProps> = ({ 
+  history, 
+  onSendMessage, 
+  isProcessing, 
+  currentPage, 
+  onClose,
+  mode,
+  onModeChange
+}) => {
   const [input, setInput] = useState('');
-  const [mode, setMode] = useState<ChatMode>('general');
   const [model, setModel] = useState<AIModel>('gemini-2.5-flash');
   const [useSearch, setUseSearch] = useState(false);
   const [showImageGen, setShowImageGen] = useState(false);
@@ -139,7 +148,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ history, onSendMes
              <span className="text-gray-400">Context:</span>
              <select 
                 value={mode} 
-                onChange={(e) => setMode(e.target.value as ChatMode)}
+                onChange={(e) => onModeChange(e.target.value as ChatMode)}
                 className="font-medium border-none bg-gray-50 dark:bg-gray-700 rounded px-2 py-1 focus:ring-0 text-gray-700 dark:text-gray-200 cursor-pointer outline-none hover:bg-gray-100 dark:hover:bg-gray-600"
             >
                 <option value="general">General Chat</option>
