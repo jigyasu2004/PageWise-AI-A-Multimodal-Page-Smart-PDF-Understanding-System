@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tabwise PDF Explainer</title>
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:wght@300;400;700&display=swap" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+              serif: ['Merriweather', 'serif'],
+            },
+            colors: {
+              brand: {
+                50: 'var(--brand-50)',
+                100: 'var(--brand-100)',
+                500: 'var(--brand-500)',
+                600: 'var(--brand-600)',
+                900: 'var(--brand-900)',
+              }
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      :root {
+        --brand-50: #f0f9ff;
+        --brand-100: #e0f2fe;
+        --brand-500: #0ea5e9;
+        --brand-600: #0284c7;
+        --brand-900: #0c4a6e;
+      }
+
+      /* Hide scrollbar for cleaner UI in specific areas */
+      .no-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+      
+      /* Table styling for markdown - tweaks for prose */
+      .prose table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 1.5em;
+        margin-bottom: 1.5em;
+        font-size: 0.875rem;
+      }
+      .prose th {
+        background-color: #f9fafb;
+        padding: 0.75rem;
+        border: 1px solid #e5e7eb;
+        text-align: left;
+        font-weight: 600;
+        color: #111827;
+      }
+      .prose td {
+        padding: 0.75rem;
+        border: 1px solid #e5e7eb;
+        vertical-align: top;
+      }
+
+      /* Dark mode overrides for prose tables */
+      .dark .prose th {
+        background-color: #1f2937;
+        border-color: #374151;
+        color: #e5e7eb;
+      }
+      .dark .prose td {
+        border-color: #374151;
+      }
+      .dark .prose strong {
+        color: #e5e7eb;
+      }
+      .dark .prose h1, .dark .prose h2, .dark .prose h3, .dark .prose h4 {
+        color: #f3f4f6;
+      }
+
+      /* PDF Text Layer */
+      .textLayer {
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        overflow: hidden;
+        pointer-events: none;
+        line-height: 1.0;
+        opacity: 1; /* Fully visible container so selection highlights show clearly */
+      }
+
+      .textLayer > span {
+        color: transparent; /* Text itself is invisible */
+        position: absolute;
+        white-space: pre;
+        cursor: text;
+        transform-origin: 0% 0%;
+        pointer-events: auto;
+      }
+
+      ::selection {
+        background: rgba(14, 165, 233, 0.6); /* Increased opacity for better visibility */
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.2.1",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.1/",
+    "react/": "https://esm.sh/react@^19.2.1/",
+    "@google/genai": "https://esm.sh/@google/genai@^1.33.0",
+    "lucide-react": "https://esm.sh/lucide-react@^0.559.0",
+    "react-markdown": "https://esm.sh/react-markdown@^9.0.1",
+    "remark-gfm": "https://esm.sh/remark-gfm@^4.0.0",
+    "rehype-raw": "https://esm.sh/rehype-raw@^7.0.0",
+    "jspdf": "https://esm.sh/jspdf@^3.0.4",
+    "html2canvas": "https://esm.sh/html2canvas@^1.4.1",
+    "uuid": "https://esm.sh/uuid@^13.0.0",
+    "pdfjs-dist": "https://esm.sh/pdfjs-dist@3.11.174",
+    "react-syntax-highlighter": "https://esm.sh/react-syntax-highlighter@15.6.1",
+    "react-syntax-highlighter/dist/esm/styles/prism": "https://esm.sh/react-syntax-highlighter@15.6.1/dist/esm/styles/prism",
+    "react-syntax-highlighter/": "https://esm.sh/react-syntax-highlighter@^16.1.0/"
+  }
+}
+</script>
+</head>
+  <body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 h-screen overflow-hidden">
+    <div id="root" class="h-full flex flex-col"></div>
+  </body>
+</html>
